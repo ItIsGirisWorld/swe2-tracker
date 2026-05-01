@@ -769,7 +769,7 @@ function buildSysPrompt() {
     return [`\n[${cat}]`, ...rows];
   });
 
-  return `You are a sharp, warm SWE 2 interview prep coach for Giri, preparing for SWE 2 roles in India.
+  return `You are a sharp, warm SWE 2 interview prep coach for Gargi, preparing for SWE 2 roles in India.
 
 Today: ${today()}
 Today's topic: ${t ? t.name : 'None'} (${st} session, ~${t ? t.hpg : 0}h)
@@ -1091,7 +1091,7 @@ async function handleCheckin(result) {
 function showDoneScreen(result) {
   const { left } = calcHours();
   const configs = {
-    completed: { emoji: '🎉', title: 'Session Complete!',  msg: "Solid work today, Giri. Rest up and come back sharp tomorrow." },
+    completed: { emoji: '🎉', title: 'Session Complete!',  msg: "Solid work today, Gargi. Rest up and come back sharp tomorrow." },
     partial:   { emoji: '📘', title: 'Day Logged',         msg: "Progress is progress. Even a partial session keeps the momentum going." },
     missed:    { emoji: '📅', title: 'Day Logged',         msg: "Life happens. Reset tonight and make tomorrow count." },
     default:   { emoji: '🎯', title: 'Day Complete!',      msg: "See you tomorrow for another session." }
