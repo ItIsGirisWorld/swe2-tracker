@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SWE 2 Prep Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #f7f5f1;
+      --surface:     #ffffff;
+      --surface-2:   #f9f8f5;
+      --border:      #e8e4dd;
+      --border-str:  #cfc9bf;
+      --text:        #1c1a17;
+      --text-2:      #6b6460;
+      --text-3:      #a09890;
+      --blue:        #2d6ef6;
+      --blue-soft:   #edf2ff;
+      --blue-dark:   #1a4ec0;
+      --green:       #1a9954;
+      --green-soft:  #edfdf4;
+      --amber:       #c87208;
+      --amber-soft:  #fef9ee;
+      --red:         #d42d2d;
+      --red-soft:    #fef1f1;
+      --r:           12px;
+      --r-sm:        8px;
+      --shadow:      0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md:   0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    html, body { height: 100%; overflow: hidden; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* ─── HEADER ─── */
+    #header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 18px 12px;
+      flex-shrink: 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    .hdr-row1 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 11px;
+    }
+
+    .app-title {
+      font-family: 'Fraunces', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .app-title em { color: var(--blue); font-style: normal; }
+
+    .topic-chip {
+      background: var(--blue-soft);
+      color: var(--blue-dark);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    .prog-bar-bg {
+      background: var(--border);
+      border-radius: 100px;
+      height: 5px;
+      overflow: hidden;
+      margin-bottom: 5px;
+    }
+
+    .prog-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, var(--blue) 0%, #6366f1 100%);
+      transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    .prog-label {
+      font-size: 11px;
+      color: var(--text-3);
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      margin-bottom: 10px;
+    }
+
+    .prog-label strong { color: var(--text-2); font-weight: 600; }
+
+    .today-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blue);
+      border-radius: var(--r-sm);
+      padding: 9px 12px;
+    }
+
+    .today-left { flex: 1; min-width: 0; }
+
+    .today-label {
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      color: var(--blue);
+      margin-bottom: 2px;
+    }
+
+    .today-name {
+      font-family: 'Fraunces', serif;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .today-meta { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+
+    .btn-toggle {
+      background: none;
+      border: 1px solid var(--border-str);
+      border-radius: var(--r-sm);
+      padding: 5px 11px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-2);
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+
+    .btn-toggle:hover {
+      background: var(--blue-soft);
+      border-color: var(--blue);
+      color: var(--blue-dark);
+    }
+
+    /* ─── CHAT AREA ─── */
+    #chat-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px 18px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: opacity 0.5s;
+    }
+
+    #chat-area::-webkit-scrollbar { width: 4px; }
+    #chat-area::-webkit-scrollbar-track { background: transparent; }
+    #chat-area::-webkit-scrollbar-thumb { background: var(--border-str); border-radius: 2px; }
+
+    .bubble {
+      display: flex;
+      max-width: 85%;
+      animation: fadeUp 0.25s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .bubble.user      { align-self: flex-end; }
+    .bubble.assistant { align-self: flex-start; }
+    .bubble.error     { align-self: flex-start; max-width: 90%; }
+
+    .bubble-inner {
+      padding: 10px 14px;
+      border-radius: var(--r);
+      font-size: 13.5px;
+      line-height: 1.65;
+    }
+
+    .bubble.user .bubble-inner {
+      background: var(--blue);
+      color: #fff;
+      border-bottom-right-radius: 3px;
+      box-shadow: 0 2px 6px rgba(45,110,246,0.25);
+    }
+
+    .bubble.assistant .bubble-inner {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 3px;
+      box-shadow: var(--shadow);
+    }
+
+    .bubble.error .bubble-inner {
+      background: var(--red-soft);
+      color: var(--red);
+      border: 1px solid #fcc;
+      border-radius: var(--r);
+    }
+
+    .bubble-inner strong { font-weight: 600; }
+    .bubble-inner em { font-style: italic; }
+    .bubble-inner code {
+      background: rgba(0,0,0,0.07);
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 12.5px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .bubble.user .bubble-inner code { background: rgba(255,255,255,0.2); }
+
+    .bubble-inner ul, .bubble-inner ol { padding-left: 18px; margin: 4px 0; }
+    .bubble-inner li { margin: 2px 0; }
+
+    #typing { display: none; align-self: flex-start; animation: fadeUp 0.2s ease both; }
+
+    .dots {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      border-bottom-left-radius: 3px;
+      box-shadow: var(--shadow);
+    }
+
+    .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--text-3);
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+
+    .dot:nth-child(2) { animation-delay: .2s; }
+    .dot:nth-child(3) { animation-delay: .4s; }
+
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-5px); }
+    }
+
+    /* ─── DONE SCREEN ─── */
+    #done-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      padding: 40px 24px;
+      text-align: center;
+      animation: fadeUp 0.4s ease both;
+    }
+
+    .done-emoji { font-size: 58px; margin-bottom: 14px; }
+
+    .done-title {
+      font-family: 'Fraunces', serif;
+      font-size: 25px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+
+    .done-msg {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.6;
+      max-width: 300px;
+      margin-bottom: 22px;
+    }
+
+    .done-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 18px 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .done-stat .stat-num {
+      font-family: 'Fraunces', serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+    }
+
+    .done-stat .stat-label { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+    /* ─── FOOTER ─── */
+    #footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 11px 14px;
+      flex-shrink: 0;
+    }
+
+    #input-area { display: flex; gap: 8px; align-items: flex-end; }
+
+    #msg-input {
+      flex: 1;
+      border: 1px solid var(--border-str);
+      border-radius: var(--r-sm);
+      padding: 9px 13px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13.5px;
+      color: var(--text);
+      resize: none;
+      min-height: 40px;
+      max-height: 120px;
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.15s, background 0.15s;
+      line-height: 1.5;
+    }
+
+    #msg-input:focus { border-color: var(--blue); background: var(--surface); }
+    #msg-input::placeholder { color: var(--text-3); }
+
+    .btn-send {
+      height: 40px;
+      padding: 0 16px;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: var(--r-sm);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-send:hover:not(:disabled) { background: var(--blue-dark); }
+    .btn-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-eod {
+      height: 40px;
+      padding: 0 12px;
+      background: none;
+      border: 1px solid var(--border-str);
+      border-radius: var(--r-sm);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-2);
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .btn-eod:hover { background: var(--amber-soft); border-color: var(--amber); color: var(--amber); }
+
+    #checkin-bar { display: none; }
+
+    .ci-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--text-3);
+      margin-bottom: 9px;
+    }
+
+    .ci-btns { display: flex; gap: 8px; }
+
+    .btn-ci {
+      flex: 1;
+      padding: 11px 8px;
+      border-radius: var(--r-sm);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+
+    .btn-ci.c { background: var(--green-soft); border: 2px solid var(--green); color: var(--green); }
+    .btn-ci.c:hover:not(:disabled) { background: var(--green); color: #fff; }
+    .btn-ci.p { background: var(--amber-soft); border: 2px solid var(--amber); color: var(--amber); }
+    .btn-ci.p:hover:not(:disabled) { background: var(--amber); color: #fff; }
+    .btn-ci.m { background: var(--red-soft); border: 2px solid var(--red); color: var(--red); }
+    .btn-ci.m:hover:not(:disabled) { background: var(--red); color: #fff; }
+    .btn-ci:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ─── PROGRESS PANEL ─── */
+    #prog-panel {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20,18,14,0.55);
+      z-index: 999;
+      backdrop-filter: blur(2px);
+      overflow-y: auto;
+    }
+
+    #prog-panel.open { display: block; }
+
+    .panel-wrap {
+      background: var(--surface);
+      min-height: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .panel-hdr {
+      position: sticky;
+      top: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 15px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1;
+    }
+
+    .panel-hdr-title {
+      font-family: 'Fraunces', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .panel-summary { font-size: 12px; color: var(--text-3); margin-top: 1px; }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--text-2);
+      padding: 4px 8px;
+      line-height: 1;
+      border-radius: 6px;
+      transition: background 0.12s;
+    }
+
+    .btn-close:hover { background: var(--border); }
+
+    .cat-section { padding: 0 18px; }
+
+    .cat-hdr {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      color: var(--text-3);
+      padding: 14px 0 7px;
+    }
+
+    .t-row {
+      display: flex;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 10px;
+    }
+
+    .t-row:last-child { border-bottom: none; }
+    .t-info { flex: 1; min-width: 0; }
+
+    .t-name {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .t-sub { font-size: 10.5px; color: var(--text-3); margin-top: 1px; }
+
+    .pips { display: flex; gap: 4px; flex-shrink: 0; }
+
+    .pip {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--border);
+      border: 1.5px solid var(--border-str);
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .pip.prg { background: var(--blue); border-color: var(--blue); }
+    .pip.done { background: var(--green); border-color: var(--green); }
+
+    .badge {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 100px;
+      flex-shrink: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .badge.done  { background: var(--green-soft); color: var(--green); }
+    .badge.rev   { background: var(--amber-soft); color: var(--amber); }
+    .badge.today { background: var(--blue-soft);  color: var(--blue-dark); }
+
+    /* ─── LOADING ─── */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      gap: 14px;
+    }
+
+    .loading-title {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .loading-dots { display: flex; gap: 6px; }
+
+    .loading-dots .dot {
+      width: 7px; height: 7px;
+      background: var(--blue);
+      border-radius: 50%;
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+
+    .loading-dots .dot:nth-child(2) { animation-delay: .2s; }
+    .loading-dots .dot:nth-child(3) { animation-delay: .4s; }
+  </style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="loading-title">SWE <span style="color:var(--blue)">2</span> Prep</div>
+  <div class="loading-dots">
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  </div>
+</div>
+
+<div id="header">
+  <div class="hdr-row1">
+    <div class="app-title">SWE <em>2</em> Prep</div>
+    <div id="topic-chip" class="topic-chip">— / 26 topics</div>
+  </div>
+  <div class="prog-bar-bg">
+    <div id="prog-fill" class="prog-bar-fill"></div>
+  </div>
+  <div id="prog-label" class="prog-label">Loading…</div>
+  <div class="today-card">
+    <div class="today-left">
+      <div class="today-label">Today's Topic</div>
+      <div id="today-name" class="today-name">—</div>
+      <div id="today-meta" class="today-meta">—</div>
+    </div>
+    <button class="btn-toggle" onclick="togglePanel()">Progress ↗</button>
+  </div>
+</div>
+
+<div id="chat-area">
+  <div id="typing" class="bubble assistant">
+    <div class="dots">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+</div>
+
+<div id="done-screen">
+  <div class="done-emoji" id="done-emoji">🎯</div>
+  <div class="done-title" id="done-title">Day Complete!</div>
+  <div class="done-msg" id="done-msg">Great session today. Rest up, come back fresh tomorrow.</div>
+  <div class="done-stat">
+    <span class="stat-num" id="done-hours">—</span>
+    <div class="stat-label">hours still to go</div>
+  </div>
+</div>
+
+<div id="footer">
+  <div id="input-area">
+    <textarea id="msg-input" placeholder="Ask about today's topic… (Enter to send)" rows="1"></textarea>
+    <button class="btn-send" id="btn-send" onclick="sendMsg()">Send</button>
+    <button class="btn-eod" onclick="showCheckin()">End of Day</button>
+  </div>
+  <div id="checkin-bar">
+    <div class="ci-label">How did today's session go?</div>
+    <div class="ci-btns">
+      <button class="btn-ci c" onclick="handleCheckin('completed')">✓ Completed</button>
+      <button class="btn-ci p" onclick="handleCheckin('partial')">~ Partial</button>
+      <button class="btn-ci m" onclick="handleCheckin('missed')">✗ Missed</button>
+    </div>
+  </div>
+</div>
+
+<div id="prog-panel">
+  <div class="panel-wrap">
+    <div class="panel-hdr">
+      <div>
+        <div class="panel-hdr-title">Topic Progress</div>
+        <div class="panel-summary" id="panel-summary">Loading…</div>
+      </div>
+      <button class="btn-close" onclick="togglePanel()">✕</button>
+    </div>
+    <div id="panel-body"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// TOPIC DATA
+// ═══════════════════════════════════════════════════
+const TOPICS = [
+  {"id":"dsa_arr", "name":"DSA — Array",            "sl":4,"hpg":3,"cat":"DSA"},
+  {"id":"dsa_rec", "name":"DSA — Recursion",         "sl":3,"hpg":4,"cat":"DSA"},
+  {"id":"dsa_ll",  "name":"DSA — Linked List",       "sl":4,"hpg":3,"cat":"DSA"},
+  {"id":"dsa_bit", "name":"DSA — Bit Manipulation",  "sl":3,"hpg":4,"cat":"DSA"},
+  {"id":"dsa_bt",  "name":"DSA — Binary Trees",      "sl":3,"hpg":4,"cat":"DSA"},
+  {"id":"dsa_gr",  "name":"DSA — Greedy",            "sl":4,"hpg":3,"cat":"DSA"},
+  {"id":"dsa_dp",  "name":"DSA — DP",                "sl":4,"hpg":3,"cat":"DSA"},
+  {"id":"dsa_bst", "name":"DSA — BST",               "sl":3,"hpg":6,"cat":"DSA"},
+  {"id":"dsa_sq",  "name":"DSA — Stack & Queue",     "sl":4,"hpg":3,"cat":"DSA"},
+  {"id":"dsa_gph", "name":"DSA — Graph",             "sl":3,"hpg":6,"cat":"DSA"},
+  {"id":"jv_bas",  "name":"Java — Language Basics",  "sl":4,"hpg":1,"cat":"Java"},
+  {"id":"jv_oop",  "name":"Java — OOP & Concepts",   "sl":3,"hpg":2,"cat":"Java"},
+  {"id":"jv_con",  "name":"Java — Concurrency & MT", "sl":2,"hpg":4,"cat":"Java"},
+  {"id":"lld_pat", "name":"LLD — Design Patterns",   "sl":3,"hpg":2,"cat":"LLD"},
+  {"id":"lld_easy","name":"LLD — Easy Questions",    "sl":0,"hpg":1,"cat":"LLD"},
+  {"id":"lld_med", "name":"LLD — Medium Questions",  "sl":0,"hpg":2,"cat":"LLD"},
+  {"id":"lld_hard","name":"LLD — Hard Questions",    "sl":0,"hpg":2,"cat":"LLD"},
+  {"id":"hld_comp","name":"HLD — Basic Components",  "sl":2,"hpg":2,"cat":"HLD"},
+  {"id":"hld_trd", "name":"HLD — Tradeoffs",         "sl":1,"hpg":2,"cat":"HLD"},
+  {"id":"hld_easy","name":"HLD — Easy Questions",    "sl":0,"hpg":1,"cat":"HLD"},
+  {"id":"hld_med", "name":"HLD — Medium Questions",  "sl":0,"hpg":2,"cat":"HLD"},
+  {"id":"hld_hard","name":"HLD — Hard Questions",    "sl":0,"hpg":2,"cat":"HLD"},
+  {"id":"res_bk",  "name":"Resume — Backend Terms",  "sl":2,"hpg":1,"cat":"Resume"},
+  {"id":"res_fin", "name":"Resume — Finalise",       "sl":4,"hpg":1,"cat":"Resume"},
+  {"id":"ai_bas",  "name":"AI — Agent Basics",       "sl":1,"hpg":2,"cat":"AI"},
+  {"id":"ai_agt",  "name":"AI — Create an Agent",    "sl":1,"hpg":1,"cat":"AI"}
+];
+
+// ═══════════════════════════════════════════════════
+// STORAGE — localStorage wrappers
+// ═══════════════════════════════════════════════════
+function sGet(key) {
+  try {
+    const v = localStorage.getItem(key);
+    return v ? JSON.parse(v) : null;
+  } catch { return null; }
+}
+
+function sSet(key, val) {
+  try {
+    localStorage.setItem(key, JSON.stringify(val));
+  } catch(e) { console.error('storage set:', e); }
+}
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let prog = null;
+let daily = null;
+let todayTopic = null;
+let history = [];
+let sending = false;
+
+// ═══════════════════════════════════════════════════
+// PROGRESS LOGIC
+// ═══════════════════════════════════════════════════
+function initProg() {
+  const p = {};
+  TOPICS.forEach(t => { p[t.id] = { level: t.sl, revised: false }; });
+  return p;
+}
+
+function needsWork(t) {
+  const p = prog[t.id];
+  if (!p) return false;
+  return t.sl >= 4 ? !p.revised : p.level < 4;
+}
+
+function calcHours() {
+  let done = 0, left = 0;
+  TOPICS.forEach(t => {
+    const p = prog[t.id];
+    if (!p) return;
+    if (t.sl >= 4) {
+      if (p.revised) done += t.hpg; else left += t.hpg;
+    } else {
+      done += (p.level - t.sl) * t.hpg;
+      left += (4 - p.level) * t.hpg;
+    }
+  });
+  return { done, left };
+}
+
+function pickTopic(prevId) {
+  const eligible = TOPICS.filter(t => needsWork(t));
+  if (!eligible.length) return null;
+  const pool = eligible.length > 1 ? eligible.filter(t => t.id !== prevId) : eligible;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function sessionType(t) {
+  if (!t) return '';
+  const p = prog[t.id];
+  if (t.sl >= 4) return 'Revision';
+  if (p.level === t.sl) return 'New topic';
+  return 'Practice';
+}
+
+function today() {
+  return new Date().toISOString().split('T')[0];
+}
+
+// ═══════════════════════════════════════════════════
+// SYSTEM PROMPT
+// ═══════════════════════════════════════════════════
+function buildSysPrompt() {
+  const { done, left } = calcHours();
+  const pct = Math.round((done / 114) * 100);
+  const t = todayTopic;
+  const st = sessionType(t);
+
+  const cats = [...new Set(TOPICS.map(tp => tp.cat))];
+  const lines = cats.flatMap(cat => {
+    const rows = TOPICS.filter(tp => tp.cat === cat).map(tp => {
+      const p = prog[tp.id];
+      let status;
+      if (tp.sl >= 4) {
+        status = p.revised ? 'Done (revised)' : 'Needs revision';
+      } else {
+        status = p.level >= 4 ? 'Done' : `Level ${p.level}/4`;
+      }
+      return `  • ${tp.name}: ${status}`;
+    });
+    return [`\n[${cat}]`, ...rows];
+  });
+
+  return `You are a sharp, warm SWE 2 interview prep coach for Giri, preparing for SWE 2 roles in India.
+
+Today: ${today()}
+Today's topic: ${t ? t.name : 'None'} (${st} session, ~${t ? t.hpg : 0}h)
+Overall: ${done}h done / 114h total (${pct}%, ${left}h left)
+
+Progress by topic:
+${lines.join('\n')}
+
+Behavior:
+- On the opening "Good morning" message: warm greeting in ~100 words. 1-2 sentences on overall progress, then today's topic with 2-3 concrete things to focus on or practice.
+- Mid-day: answer questions concisely with examples, hints, or specific practice problem suggestions.
+- After end-of-day check-in: if completed — reinforce the win. If partial/missed — empathise briefly, give one actionable tip.
+- Be direct, practical, encouraging. Never preachy.`;
+}
+
+// ═══════════════════════════════════════════════════
+// CLAUDE API — proxied through /api/chat
+// ═══════════════════════════════════════════════════
+async function callClaude(userMsg) {
+  history.push({ role: 'user', content: userMsg });
+
+  const resp = await fetch('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 1000,
+      system: buildSysPrompt(),
+      messages: history
+    })
+  });
+
+  const data = await resp.json();
+  if (data.error) throw new Error(data.error.message);
+
+  const reply = data.content[0].text;
+  history.push({ role: 'assistant', content: reply });
+  return reply;
+}
+
+// ═══════════════════════════════════════════════════
+// MARKDOWN RENDERER
+// ═══════════════════════════════════════════════════
+function renderMd(text) {
+  let s = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+  s = s.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+  s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  s = s.replace(/^#{1,3} (.+)$/gm, '<strong>$1</strong>');
+
+  const lines = s.split('\n');
+  let out = '';
+  let inList = false;
+
+  for (const line of lines) {
+    const listMatch = line.match(/^[-•*]\s+(.+)/);
+    const numMatch  = line.match(/^\d+\.\s+(.+)/);
+    if (listMatch || numMatch) {
+      if (!inList) { out += '<ul style="margin:6px 0;padding-left:16px">'; inList = true; }
+      out += `<li>${listMatch ? listMatch[1] : numMatch[1]}</li>`;
+    } else {
+      if (inList) { out += '</ul>'; inList = false; }
+      out += line + (line ? '<br>' : '<br>');
+    }
+  }
+
+  if (inList) out += '</ul>';
+  out = out.replace(/<br><ul/g, '<ul').replace(/<\/ul><br>/g, '</ul>');
+  out = out.replace(/(<br>){3,}/g, '<br><br>');
+  return out.replace(/^<br>/, '').replace(/<br>$/, '');
+}
+
+// ═══════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════
+function esc(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+function addBubble(role, text) {
+  const chat = document.getElementById('chat-area');
+  const typing = document.getElementById('typing');
+  const div = document.createElement('div');
+  div.className = `bubble ${role}`;
+  const inner = document.createElement('div');
+  inner.className = 'bubble-inner';
+  inner.innerHTML = role === 'user' ? esc(text) : renderMd(text);
+  div.appendChild(inner);
+  chat.insertBefore(div, typing);
+  scrollChat();
+}
+
+function scrollChat() {
+  const c = document.getElementById('chat-area');
+  c.scrollTop = c.scrollHeight;
+}
+
+function showTyping() {
+  document.getElementById('typing').style.display = 'flex';
+  scrollChat();
+}
+
+function hideTyping() {
+  document.getElementById('typing').style.display = 'none';
+}
+
+function updateHeader() {
+  const { done, left } = calcHours();
+  const pct = Math.round((done / 114) * 100);
+
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').innerHTML =
+    `<strong>${done}h done</strong> · ${left}h left · ${pct}% complete`;
+
+  const doneCount = TOPICS.filter(t => !needsWork(t)).length;
+  document.getElementById('topic-chip').textContent = `${doneCount} / ${TOPICS.length} done`;
+
+  if (todayTopic) {
+    document.getElementById('today-name').textContent = todayTopic.name;
+    document.getElementById('today-meta').textContent =
+      `${sessionType(todayTopic)} · ~${todayTopic.hpg}h`;
+  } else {
+    document.getElementById('today-name').textContent = 'All topics complete! 🎉';
+    document.getElementById('today-meta').textContent = '';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// PROGRESS PANEL
+// ═══════════════════════════════════════════════════
+function renderPanel() {
+  const { done, left } = calcHours();
+  const pct = Math.round((done / 114) * 100);
+  document.getElementById('panel-summary').textContent =
+    `${done}h done · ${left}h left · ${pct}%`;
+
+  const cats = [...new Set(TOPICS.map(t => t.cat))];
+  let html = '';
+
+  cats.forEach(cat => {
+    html += `<div class="cat-section"><div class="cat-hdr">${cat}</div>`;
+    TOPICS.filter(t => t.cat === cat).forEach(t => {
+      const p = prog[t.id];
+      const isToday = todayTopic && t.id === todayTopic.id;
+      const isDone  = t.sl >= 4 ? p.revised : p.level >= 4;
+      const needsRev = t.sl >= 4 && !p.revised;
+
+      let pipsHtml = '<div class="pips">';
+      if (t.sl >= 4) {
+        const cls = p.revised ? 'done' : (isToday ? 'prg' : '');
+        pipsHtml += `<div class="pip ${cls}"></div>`;
+      } else {
+        for (let i = 1; i <= 4; i++) {
+          let cls = '';
+          if (p.level >= 4) cls = 'done';
+          else if (i <= p.level) cls = 'prg';
+          pipsHtml += `<div class="pip ${cls}"></div>`;
+        }
+      }
+      pipsHtml += '</div>';
+
+      let badge = '';
+      if (isToday)     badge = '<span class="badge today">Today</span>';
+      else if (isDone) badge = '<span class="badge done">Done</span>';
+      else if (needsRev) badge = '<span class="badge rev">Revision due</span>';
+
+      const sub = t.sl >= 4
+        ? `Expert start · ${t.hpg}h session`
+        : `Level ${p.level}/4 · ${t.hpg}h/grade`;
+
+      html += `<div class="t-row">
+        <div class="t-info">
+          <div class="t-name">${t.name}</div>
+          <div class="t-sub">${sub}</div>
+        </div>
+        ${pipsHtml}${badge}
+      </div>`;
+    });
+    html += '</div>';
+  });
+
+  document.getElementById('panel-body').innerHTML = html;
+}
+
+function togglePanel() {
+  const panel = document.getElementById('prog-panel');
+  if (panel.classList.contains('open')) {
+    panel.classList.remove('open');
+  } else {
+    renderPanel();
+    panel.classList.add('open');
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// SEND MESSAGE
+// ═══════════════════════════════════════════════════
+async function sendMsg() {
+  if (sending) return;
+  const inp = document.getElementById('msg-input');
+  const text = inp.value.trim();
+  if (!text) return;
+
+  inp.value = '';
+  inp.style.height = '';
+  setSending(true);
+  addBubble('user', text);
+  showTyping();
+
+  try {
+    const reply = await callClaude(text);
+    hideTyping();
+    addBubble('assistant', reply);
+  } catch(e) {
+    hideTyping();
+    addBubble('error', 'Could not reach Claude: ' + e.message);
+  }
+
+  setSending(false);
+
+  if (daily && daily.phase === 'morning') {
+    daily.phase = 'working';
+    sSet('swe2_daily', daily);
+  }
+}
+
+function setSending(v) {
+  sending = v;
+  document.getElementById('btn-send').disabled = v;
+}
+
+// ═══════════════════════════════════════════════════
+// MORNING GREETING
+// ═══════════════════════════════════════════════════
+async function triggerMorning() {
+  if (sending) return;
+  setSending(true);
+  showTyping();
+
+  try {
+    const reply = await callClaude('Good morning!');
+    hideTyping();
+    addBubble('assistant', reply);
+    daily.phase = 'working';
+    sSet('swe2_daily', daily);
+  } catch(e) {
+    hideTyping();
+    addBubble('error', 'Failed to load morning greeting: ' + e.message);
+  }
+
+  setSending(false);
+}
+
+// ═══════════════════════════════════════════════════
+// END OF DAY / CHECK-IN
+// ═══════════════════════════════════════════════════
+function showCheckin() {
+  document.getElementById('input-area').style.display = 'none';
+  document.getElementById('checkin-bar').style.display = 'block';
+  if (daily) { daily.phase = 'checkin'; sSet('swe2_daily', daily); }
+}
+
+async function handleCheckin(result) {
+  document.querySelectorAll('.btn-ci').forEach(b => b.disabled = true);
+
+  if (result === 'completed' && todayTopic) {
+    const p = prog[todayTopic.id];
+    if (todayTopic.sl >= 4) {
+      p.revised = true;
+    } else {
+      p.level = Math.min(p.level + 1, 4);
+    }
+    sSet('swe2_prog', prog);
+    updateHeader();
+  }
+
+  const msgs = {
+    completed: `End of day: I completed my session on ${todayTopic?.name}!`,
+    partial:   `End of day: I partially completed my session on ${todayTopic?.name}.`,
+    missed:    `End of day: I missed today's session on ${todayTopic?.name}.`
+  };
+
+  setSending(true);
+  showTyping();
+
+  try {
+    const reply = await callClaude(msgs[result]);
+    hideTyping();
+    addBubble('assistant', reply);
+  } catch(e) {
+    hideTyping();
+    addBubble('error', e.message);
+  }
+
+  setSending(false);
+
+  if (daily) {
+    daily.phase = 'done';
+    daily.result = result;
+    sSet('swe2_daily', daily);
+  }
+
+  setTimeout(() => {
+    const chat = document.getElementById('chat-area');
+    chat.style.opacity = '0';
+    setTimeout(() => {
+      chat.style.display = 'none';
+      document.getElementById('footer').style.display = 'none';
+      showDoneScreen(result);
+    }, 500);
+  }, 3000);
+}
+
+function showDoneScreen(result) {
+  const { left } = calcHours();
+  const configs = {
+    completed: { emoji: '🎉', title: 'Session Complete!',  msg: "Solid work today, Giri. Rest up and come back sharp tomorrow." },
+    partial:   { emoji: '📘', title: 'Day Logged',         msg: "Progress is progress. Even a partial session keeps the momentum going." },
+    missed:    { emoji: '📅', title: 'Day Logged',         msg: "Life happens. Reset tonight and make tomorrow count." },
+    default:   { emoji: '🎯', title: 'Day Complete!',      msg: "See you tomorrow for another session." }
+  };
+
+  const cfg = configs[result] || configs.default;
+  document.getElementById('done-emoji').textContent = cfg.emoji;
+  document.getElementById('done-title').textContent = cfg.title;
+  document.getElementById('done-msg').textContent   = cfg.msg;
+  document.getElementById('done-hours').textContent = left;
+  document.getElementById('done-screen').style.display = 'flex';
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+function init() {
+  prog = sGet('swe2_prog');
+  if (!prog) {
+    prog = initProg();
+    sSet('swe2_prog', prog);
+  }
+
+  const todayStr = today();
+  daily = sGet('swe2_daily');
+
+  if (!daily || daily.date !== todayStr) {
+    const prevId = daily?.topicId || null;
+    const picked = pickTopic(prevId);
+    daily = {
+      date: todayStr,
+      topicId: picked?.id || null,
+      phase: 'morning',
+      prevTopicId: prevId,
+      result: null
+    };
+    sSet('swe2_daily', daily);
+  }
+
+  todayTopic = daily.topicId ? TOPICS.find(t => t.id === daily.topicId) : null;
+  updateHeader();
+  document.getElementById('loading').style.display = 'none';
+
+  const phase = daily.phase;
+
+  if (phase === 'done') {
+    document.getElementById('chat-area').style.display = 'none';
+    document.getElementById('footer').style.display = 'none';
+    showDoneScreen(daily.result);
+    return;
+  }
+
+  if (phase === 'checkin') {
+    document.getElementById('input-area').style.display = 'none';
+    document.getElementById('checkin-bar').style.display = 'block';
+    addBubble('assistant', "Welcome back! Mark today's session using the buttons below when ready.");
+    return;
+  }
+
+  if (phase === 'morning') {
+    triggerMorning();
+    return;
+  }
+
+  // working phase — re-entry
+  addBubble('assistant', `Good to see you back! You're working on **${todayTopic?.name || "today's topic"}**. What questions do you have?`);
+}
+
+// ═══════════════════════════════════════════════════
+// INPUT HANDLERS
+// ═══════════════════════════════════════════════════
+document.getElementById('msg-input').addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
+
+document.getElementById('msg-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+});
+
+document.getElementById('prog-panel').addEventListener('click', function(e) {
+  if (e.target === this) togglePanel();
+});
+
+// ═══════════════════════════════════════════════════
+// START
+// ═══════════════════════════════════════════════════
+try {
+  init();
+} catch(err) {
+  document.getElementById('loading').style.display = 'none';
+  console.error('Init error:', err);
+  document.getElementById('chat-area').innerHTML =
+    `<div class="bubble error"><div class="bubble-inner">Failed to initialise: ${err.message}</div></div>`;
+}
+</script>
+</body>
+</html>
